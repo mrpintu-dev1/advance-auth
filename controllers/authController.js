@@ -1,3 +1,4 @@
+import crypto from "crypto";
 // internal imports
 import { User } from './../models/User.js';
 import { ErrorResponse } from './../utils/errorResponse.js';
@@ -54,7 +55,7 @@ export const forgotPassword = async (req, res, next) => {
         const resetToken = user.getResetPasswordToken();
         await user.save();
 
-        const resetUrl = `http://localhost:3000/password/${resetToken}`;
+        const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
 
         const message = `
         <h1>You have requested a password reset</h1>
@@ -85,8 +86,33 @@ export const forgotPassword = async (req, res, next) => {
     }
 };
 
-export const resetPassword = (req, res) => {
-    res.send('Reset password');
+export const resetPassword = async (req, res) => {
+    const resetPasswordToken = crypto.createHash("sha256").update(req.params.resetToken).digest('hex');
+
+    try {
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpired: { $gt: Date.now()}
+        })
+
+        if (!user) {
+            return next(new ErrorResponse('Invalid reset token', 400));
+        }
+
+        user.password = req.body.password;
+
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpired = undefined;
+
+        await user.save();
+
+        res.status(201).json({
+            success: true,
+            data: 'Password reset success'
+        })
+    } catch (error) {
+        next(error);
+    }
 };
 
 const sendToken = (user, statusCode, res) => {
