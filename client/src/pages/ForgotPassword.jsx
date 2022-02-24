@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import logo from "../assets/images/brand/logo.png";
 
 
 const ForgotPassword = () => {
@@ -40,8 +39,8 @@ const ForgotPassword = () => {
                 <div className="container">
                     <div className="row my-auto">
                         <div className="col-4 col-login mx-auto my-auto mt-5">
-                            <div className="text-center mb-6">
-                                <img src={logo} className="h-6" alt="Logo" />
+                            <div className="text-center mb-6 text-light">
+                                <h1>Forgot Password</h1>
                             </div>
                             <form onSubmit={submitHandler} className="card">
                                 <div className="card-body p-6">

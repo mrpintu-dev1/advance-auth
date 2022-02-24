@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/images/brand/logo.png";
 
 const Registration = () => {
     const navigate = useNavigate();
@@ -55,8 +54,8 @@ const Registration = () => {
                 <div className="container">
                     <div className="row my-auto">
                         <div className="col-4 col-login mx-auto my-auto mt-5">
-                            <div className="text-center mb-6">
-                                <img src={logo} className="h-6" alt="Logo" />
+                            <div className="text-center mb-6 text-light">
+                                <h1>User Login</h1>
                             </div>
                             <form onSubmit={submitHandler} className="card">
                                 <div className="card-body p-6">
